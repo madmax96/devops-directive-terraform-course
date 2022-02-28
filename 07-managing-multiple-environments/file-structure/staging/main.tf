@@ -41,6 +41,6 @@ module "web_app" {
   instance_type    = "t2.micro"
   create_dns_zone  = false
   db_name          = "${local.environment_name}webAppDB"
-  db_user          = "foo"
+  db_user          = "foo_changed"
   db_pass          = var.db_pass
 }
