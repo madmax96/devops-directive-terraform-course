@@ -25,7 +25,7 @@ Do you want to copy existing state to the new backend?
   configured "s3" backend. Do you want to copy this state to the new "s3"
   backend? Enter "yes" to copy and "no" to start with an empty state.
 
-  Enter a value: yes 
+  Enter a value: yes
 ```
 
 Now the S3 bucket and dynamoDB table are mam and are able to be used as the state backend!

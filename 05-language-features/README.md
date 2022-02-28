@@ -2,7 +2,7 @@
 
 The official documentation is the best reference for these: https://www.terraform.io/docs/language/index.html
 
-NOTE: ` ```py ` is used on code blocks to get highlighting since HCL isn't an allowable language. 
+NOTE: ` ```py ` is used on code blocks to get highlighting since HCL isn't an allowable language.
 
 ## Expressions
 
@@ -15,7 +15,7 @@ NOTE: ` ```py ` is used on code blocks to get highlighting since HCL isn't an al
 
 ### Operators
 ```py
-# Order of operations: 
+# Order of operations:
 !, - # (multiplication by -1)
 *, /, % # (modulo)
 +, - # (subtraction)
@@ -138,3 +138,13 @@ Sometimes an entity outside of terraform will automatically modify a resource (e
 #### prevent_destroy
 
 `prevent_destroy` provides an additional stopgap against accidentally destroying resources with terraform. If set to true, Terraform will reject any attempt to destroy that resource.
+
+### provisioners
+
+Perform action on local or remote machine
+
+- file
+- local-exec
+- remote-exec
+- vendor
+  - puppet

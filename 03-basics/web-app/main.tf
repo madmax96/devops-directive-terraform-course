@@ -2,10 +2,10 @@ terraform {
   # Assumes s3 bucket and dynamo DB table already set up
   # See /code/03-basics/aws-backend
   backend "s3" {
-    bucket         = "devops-directive-tf-state"
+    bucket         = "tf-ms-playground-state"
     key            = "03-basics/web-app/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-state-locking"
+    dynamodb_table = "tf-ms-playground-state-locking"
     encrypt        = true
   }
 
@@ -18,7 +18,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
+  profile = "playground"
 }
 
 resource "aws_instance" "instance_1" {
@@ -30,6 +31,9 @@ resource "aws_instance" "instance_1" {
               echo "Hello, World 1" > index.html
               python3 -m http.server 8080 &
               EOF
+  tags = {
+    Name = "tf-ms-playground-instance-1"
+  }
 }
 
 resource "aws_instance" "instance_2" {
@@ -41,10 +45,13 @@ resource "aws_instance" "instance_2" {
               echo "Hello, World 2" > index.html
               python3 -m http.server 8080 &
               EOF
+  tags = {
+    Name = "tf-ms-playground-instance-2"
+  }
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket        = "devops-directive-web-app-data"
+  bucket        = "tf-ms-playground-web-app-data"
   force_destroy = true
   versioning {
     enabled = true
@@ -68,7 +75,7 @@ data "aws_subnet_ids" "default_subnet" {
 }
 
 resource "aws_security_group" "instances" {
-  name = "instance-security-group"
+  name = "tf-ms-playground-instance-security-group"
 }
 
 resource "aws_security_group_rule" "allow_http_inbound" {
@@ -101,7 +108,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "instances" {
-  name     = "example-target-group"
+  name     = "tf-ms-web-target-group"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default_vpc.id
@@ -147,7 +154,7 @@ resource "aws_lb_listener_rule" "instances" {
 
 
 resource "aws_security_group" "alb" {
-  name = "alb-security-group"
+  name = "tf-ms-playground-alb-security-group"
 }
 
 resource "aws_security_group_rule" "allow_alb_http_inbound" {
@@ -174,7 +181,7 @@ resource "aws_security_group_rule" "allow_alb_all_outbound" {
 
 
 resource "aws_lb" "load_balancer" {
-  name               = "web-app-lb"
+  name               = "tf-ms-playground-web-app-lb"
   load_balancer_type = "application"
   subnets            = data.aws_subnet_ids.default_subnet.ids
   security_groups    = [aws_security_group.alb.id]

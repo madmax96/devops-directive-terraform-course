@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "devops-directive-tf-state"
+    bucket         = "tf-ms-playground-state" # REPLACE WITH YOUR BUCKET NAME
     key            = "04-variables-and-outputs/examples/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-state-locking"
+    dynamodb_table = "tf-ms-playground-state-locking"
     encrypt        = true
   }
 
